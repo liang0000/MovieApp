@@ -1,5 +1,3 @@
-# Fave Technical Assignment - Teng Heng Liang
-
 ## Home Page
 ### Movie List, Sorting Dropdown (Release Date - default), Pull to refresh
 <img src="https://github.com/liang0000/IdealPet-SwiftUI/assets/54095039/c9ab53da-9f49-4122-96fb-9bef49ae8846" width="250"> <img src="https://github.com/liang0000/IdealPet-SwiftUI/assets/54095039/3985333d-de32-429f-bee6-dc716e821850" width="250"> <img src="https://github.com/liang0000/IdealPet-SwiftUI/assets/54095039/738b186c-29a1-4247-846c-9930ad5419b6" width="250"> 
