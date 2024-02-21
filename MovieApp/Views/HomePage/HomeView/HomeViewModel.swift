@@ -9,17 +9,18 @@ final class HomeViewModel {
     var alertItem: AlertItem?
     var sortingOptions: [String] = ["Release Date", "Title", "Rating"]
     var selectedSorting: String = "Release Date"
+    var page: Int = 1
     
     func getMovies() {
         isLoading = true
         
-        NetworkManager.shared.getMovies { [self] result in
+        NetworkManager.shared.getMovies(page: page) { [self] result in
             DispatchQueue.main.async { [self] in
                 isLoading = false
                 
                 switch result {
                     case .success(let movies):
-                        self.movies = movies
+                        self.movies.append(contentsOf: movies)
                         sortMoviesByReleaseDate()
                         
                     case .failure(let error):

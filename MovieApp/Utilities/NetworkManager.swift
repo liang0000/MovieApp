@@ -4,15 +4,16 @@ class NetworkManager: NSObject {
     static let shared           = NetworkManager()
     private let cache           = NSCache<NSString, UIImage>()
     
-    static let baseURL          = "https://api.themoviedb.org/3/movie/"
-    static let apiKey           = "?api_key=328c283cd27bd1877d9080ccb1604c91"
-    private let movieURL        = baseURL + "now_playing" + apiKey
+    private let baseURL          = "https://api.themoviedb.org/3/movie/"
+    private let apiKey           = "?api_key=328c283cd27bd1877d9080ccb1604c91"
     let imageURL                = "https://image.tmdb.org/t/p/w400"
     
     private override init() {}
     
-    func getMovies(completed: @escaping (Result<[Movie], MVError>) -> Void) {
-        guard let url = URL(string: movieURL) else {
+    func getMovies(page: Int, completed: @escaping (Result<[Movie], MVError>) -> Void) {
+        let endpoint = baseURL + "now_playing\(apiKey)&page=\(page)"
+        
+        guard let url = URL(string: endpoint) else {
             completed(.failure(.invalidURL))
             return
         }
@@ -46,7 +47,7 @@ class NetworkManager: NSObject {
     }
     
     func getMovieDetail(id: Int, completed: @escaping (Result<MovieDetail, MVError>) -> Void) {
-        let urlString = NetworkManager.baseURL + String(id) + NetworkManager.apiKey
+        let urlString = baseURL + String(id) + apiKey
         
         guard let url = URL(string: urlString) else {
             completed(.failure(.invalidURL))
