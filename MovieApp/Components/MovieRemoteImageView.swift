@@ -15,7 +15,6 @@ final class ImageLoader {
     }
 }
 
-
 struct RemoteImage: View {
     var image: Image?
     
@@ -23,7 +22,6 @@ struct RemoteImage: View {
         image?.resizable() ?? Image(systemName: "photo").resizable()
     }
 }
-
 
 struct MovieRemoteImage: View {
     @State private var imageLoader = ImageLoader()

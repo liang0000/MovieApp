@@ -5,7 +5,6 @@ import XCTest
 @testable import MovieApp
 
 final class MovieAppTests: XCTestCase {
-    
     func testSortMoviesByReleaseDate() {
         let viewModel = HomeViewModel()
         let movie1 = Movie(id: 1, title: "Movie 1", poster_path: "", popularity: 0.0, vote_average: 0.0, release_date: "2023-01-01", adult: false)
