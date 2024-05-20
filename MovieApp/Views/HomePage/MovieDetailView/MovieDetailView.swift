@@ -65,6 +65,7 @@ struct MovieDetailView: View {
 							.font(.title2.bold())
 							.foregroundStyle(Color(.label))
 					}
+					.padding(.bottom)
 					
 					SlotPicker()
 				}
