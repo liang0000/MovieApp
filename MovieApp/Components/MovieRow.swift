@@ -22,7 +22,7 @@ struct MovieRow: View {
                 }
                 Text(movie.release_date)
                     .font(.caption2)
-                    .foregroundStyle(.gray)
+					.foregroundStyle(.secondary)
             }
             .padding(.leading, 10)
         }

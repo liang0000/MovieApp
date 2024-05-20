@@ -6,12 +6,10 @@ final class ImageLoader {
     var image: Image? = nil
     
     func load(fromURL url: String) {
-        NetworkManager.shared.downloadImage(from: url) { uiImage in
-            guard let uiImage = uiImage else { return }
-            DispatchQueue.main.async {
-                self.image = Image(uiImage: uiImage)
-            }
-        }
+		Task {
+			guard let uiImage = await NetworkManager.shared.downloadImage(from: url) else { return }
+			image = Image(uiImage: uiImage)
+		}
     }
 }
 
@@ -29,6 +27,6 @@ struct MovieRemoteImage: View {
     
     var body: some View {
         RemoteImage(image: imageLoader.image)
-            .onAppear { imageLoader.load(fromURL: urlString) }
+            .task { imageLoader.load(fromURL: urlString) }
     }
 }

@@ -12,7 +12,7 @@ struct AdultSign: View {
                 .padding(5)
                 .font(.caption)
         }
-        .background(adultSign ? .red : .gray)
+		.background(Color(adultSign ? .systemRed : .systemGray))
         .foregroundStyle(.white)
         .clipShape(RoundedRectangle(cornerRadius: 5))
     }

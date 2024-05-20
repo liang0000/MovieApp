@@ -32,12 +32,19 @@ struct SlotPicker: View {
                                         .font(.caption)
                                     Text(String(dateDay.date))
                                         .padding(10)
-                                        .foregroundStyle(selectedSlot?.date == dateDay.date ? .white : .black)
-                                        .background(.blue.opacity(selectedSlot?.date == dateDay.date ? 1 : 0))
+										.bold(selectedSlot?.date == dateDay.date)
+										.foregroundStyle(
+											selectedSlot?.date == dateDay.date ?
+											Color(.systemBackground) : Color(.label)
+										)
+										.background(
+											selectedSlot?.date == dateDay.date ?
+											Color.lightModeBlueDarkModeWhite : Color.clear
+										)
                                         .clipShape(Circle())
                                 }
                             })
-                            .foregroundStyle(.black)
+							.foregroundStyle(Color(.label))
                         }
                     }
                     .padding()
@@ -54,15 +61,15 @@ struct SlotPicker: View {
                             Text(time)
                                 .padding(.horizontal, 30)
                                 .padding(.vertical, 10)
-                                .foregroundStyle(.white)
-                                .background(.blue)
+								.foregroundStyle(.white)
+								.background(Color(.systemBlue))
                                 .clipShape(RoundedRectangle(cornerRadius: 10))
                         })
                     }
                 }
-                .padding()
+				.padding(.vertical)
             }
-            .background(.white)
+			.background(Color(.tertiarySystemBackground))
             .clipShape(RoundedRectangle(cornerRadius: 10))
         }
         .actionSheet(isPresented: $isShowActionSheet) {

@@ -12,7 +12,7 @@ struct LabelBox: View {
                 .padding(5)
                 .font(.caption2)
         }
-        .foregroundStyle(.gray)
+        .foregroundStyle(.secondary)
         .clipShape(RoundedRectangle(cornerRadius: 5))
         .overlay(RoundedRectangle(cornerRadius: 5)
             .stroke(.gray, lineWidth: 2))

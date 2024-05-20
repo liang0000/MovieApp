@@ -6,51 +6,73 @@ import Combine
 final class HomeViewModel {
     var movies: [Movie] = []
     var isLoading = false
+	var isLoadingContent = false
     var alertItem: AlertItem?
-    var sortingOptions: [String] = ["Release Date", "Title", "Rating"]
-    var selectedSorting: String = "Release Date"
+	var selectedSorting: Sort = .releaseDate
     var page: Int = 1
     
     func getMovies() {
-        isLoading = true
-        
-        NetworkManager.shared.getMovies(page: page) { [self] result in
-            DispatchQueue.main.async { [self] in
-                isLoading = false
-                
-                switch result {
-                    case .success(let movies):
-                        self.movies.append(contentsOf: movies)
-                        sortMoviesByReleaseDate()
-                        
-                    case .failure(let error):
-                        switch error {
-                            case .invalidData:
-                                alertItem = AlertContext.invalidData
-                                
-                            case .invalidURL:
-                                alertItem = AlertContext.invalidURL
-                                
-                            case .invalidResponse:
-                                alertItem = AlertContext.invalidResponse
-                                
-                            case .unableToComplete:
-                                alertItem = AlertContext.unableToComplete
-                        }
-                }
-            }
-        }
+		isLoading = true
+		loadMovies()
     }
     
     func pullToRefresh() {
-        getMovies()
-        selectedSorting = "Release Date"
+		isLoading = true
+		Task {
+			do {
+				page = 1
+				let moviesData = try await NetworkManager.shared.getMovies(page: page)
+				movies = moviesData
+				sortingMovies()
+			} catch MVError.invalidData {
+				alertItem = AlertContext.invalidData
+			} catch MVError.invalidURL {
+				alertItem = AlertContext.invalidURL
+			} catch MVError.invalidResponse {
+				alertItem = AlertContext.invalidResponse
+			} catch {
+				alertItem = AlertContext.unableToComplete
+			}
+			isLoading = false
+		}
     }
+	
+	func loadMoreContent(_ movie: Movie) {
+		if movie == movies.last {
+			isLoadingContent = true
+			page += 1
+			loadMovies()
+		}
+	}
+	
+	func loadMovies() {
+		Task {
+			do {
+				let moviesData = try await NetworkManager.shared.getMovies(page: page)
+				movies.append(contentsOf: moviesData)
+			} catch MVError.invalidData {
+				alertItem = AlertContext.invalidData
+			} catch MVError.invalidURL {
+				alertItem = AlertContext.invalidURL
+			} catch MVError.invalidResponse {
+				alertItem = AlertContext.invalidResponse
+			} catch {
+				alertItem = AlertContext.unableToComplete
+			}
+			isLoading = false
+			isLoadingContent = false
+		}
+	}
     
     func sortingMovies() {
-        if selectedSorting == "Release Date" { sortMoviesByReleaseDate() }
-        else if selectedSorting == "Title" { sortMoviesByTitle() }
-        else if selectedSorting == "Rating" { sortMoviesByRating() }
+		switch selectedSorting {
+			case .releaseDate:
+				sortMoviesByReleaseDate()
+			case .title:
+				sortMoviesByTitle()
+			case .rating:
+				sortMoviesByRating()
+		}
     }
     
     func sortMoviesByReleaseDate() {
